@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <meta name="description" content="A real-time weather lookup app built with vanilla HTML, CSS and JavaScript, powered by the OpenWeather API.">
+    <link rel="icon" href="weather.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="ambient" aria-hidden="true">
+        <span class="blob blob--amber"></span>
+        <span class="blob blob--coral"></span>
+    </div>
+
+    <div class="page">
+
+   
+
+        <section class="hero">
+            <p class="eyebrow">Live weather lookup</p>
+            <h1>Know the sky before<br>you step outside.</h1>
+            <p class="hero-sub">Search any city for real-time conditions — temperature, clouds, humidity and pressure, updated instantly.</p>
+        </section>
+
+        <main>
+            <form>
+                <i class="fa-solid fa-location-dot input-icon"></i>
+                <input type="text" id="name" placeholder="Search for a city..." autocomplete="off" required>
+                <button type="submit" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+
+            <section class="result">
+
+                <figure class="name">
+                    <figcaption>Madurai</figcaption>
+                    <img src="https://flagsapi.com/GB/shiny/52.png" alt="Country flag">
+                </figure>
+
+                <figure class="temperature">
+                    <img src="https://openweathermap.org/img/wn/10d@4x.png" alt="Weather icon">
+                    <figcaption>
+                        <span>31</span>
+                        <sup>o</sup>
+                    </figcaption>
+                </figure>
+
+                <p class="description">Overcast clouds</p>
+
+                <ul class="stats-grid">
+                    <li class="stat stat--clouds">
+                        <i class="fa-solid fa-cloud"></i>
+                        <span id="clouds">98</span>%
+                        <span class="stat-label">Clouds</span>
+                    </li>
+                    <li class="stat stat--humidity">
+                        <i class="fa-solid fa-droplet"></i>
+                        <span id="humidity">98</span>%
+                        <span class="stat-label">Humidity</span>
+                    </li>
+                    <li class="stat stat--pressure">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span id="pressure">1011</span>hPa
+                        <span class="stat-label">Pressure</span>
+                    </li>
+                </ul>
+            </section>
+        </main>
+
+   
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

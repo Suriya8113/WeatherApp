@@ -1,0 +1,416 @@
+/* ============================================
+   Skyline — Weather Lookup
+   Design tokens
+   ============================================ */
+:root {
+    --ink: #10152b;
+    --twilight: #232d52;
+    --dusk: #445a91;
+    --cloud: #f6f8fc;
+    --cloud-dim: #e7ebf5;
+    --slate: #6b7794;
+    --slate-dark: #333c58;
+    --amber: #ffb648;
+    --amber-dim: #ffe3b3;
+    --coral: #ff7a5c;
+    --coral-dim: #ffd2c5;
+    --blue: #6c8bff;
+    --blue-dim: #d7e0ff;
+
+    --radius-lg: 28px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+
+    --font-display: "Space Grotesk", "Inter", sans-serif;
+    --font-body: "Inter", "Segoe UI", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--cloud);
+    background: linear-gradient(160deg, var(--ink) 0%, var(--twilight) 55%, var(--dusk) 100%);
+    overflow-x: hidden;
+}
+
+/* ============================================
+   Ambient background — signature element
+   ============================================ */
+.ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+}
+
+.blob--amber {
+    width: 480px;
+    height: 480px;
+    top: -120px;
+    right: -80px;
+    background: var(--amber);
+    animation: drift 22s ease-in-out infinite alternate;
+}
+
+.blob--coral {
+    width: 420px;
+    height: 420px;
+    bottom: -140px;
+    left: -100px;
+    background: var(--coral);
+    animation: drift 26s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 30px) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .blob { animation: none; }
+}
+
+/* ============================================
+   Page shell
+   ============================================ */
+.page {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 56px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+/* ============================================
+   Hero
+   ============================================ */
+.hero {
+    text-align: center;
+    margin: 5px 0 40px;
+}
+
+.eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 14px;
+}
+
+.hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.hero-sub {
+    max-width: 420px;
+    margin: 16px auto 0;
+    color: rgba(246, 248, 252, 0.68);
+    font-size: 0.98rem;
+    line-height: 1.55;
+}
+
+/* ============================================
+   Card (main)
+   ============================================ */
+main {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: rgba(184, 208, 255, 0.96);
+    color: var(--ink);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow:
+        0 30px 60px -20px rgba(16, 21, 43, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+/* ============================================
+   Search form
+   ============================================ */
+main form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(16, 21, 43, 0.1);
+    border-radius: 999px;
+    background: var(--cloud);
+    overflow: hidden;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+ 
+main form:focus-within {
+    border-color: rgb(160, 160, 160);
+
+}
+ 
+main form .input-icon {
+    padding-left: 20px;
+    color: var(--slate);
+    font-size: 0.85rem;
+}
+ 
+main form input,
+main form button {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: 15px;
+}
+ 
+main form input {
+    flex: 1;
+    padding: 14px 8px;
+    color: var(--ink);
+}
+ 
+main form input:focus-visible,
+main form button:focus-visible {
+    outline: none;
+}
+ 
+main form input::placeholder {
+    color: var(--slate);
+}
+ 
+main form button {
+    cursor: pointer;
+    color: black;
+    height: 100%;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    transition: background 0.25s ease;
+}
+ 
+
+#name{
+    margin-left: 10px;
+}
+
+/* ============================================
+   Result
+   ============================================ */
+main .result {
+    padding-top: 22px;
+    text-align: center;
+}
+
+main .result .name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+main .temperature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main .temperature img {
+    width: 150px;
+    height: 150px;
+    margin-top: 4px;
+}
+
+main .temperature figcaption {
+    font-family: var(--font-display);
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+    display: flex;
+    align-items: flex-start;
+}
+
+main .temperature sup {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 6px;
+    color: var(--dusk);
+}
+
+main .description {
+    padding: 8px 0 22px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--slate-dark);
+    text-transform: capitalize;
+}
+
+/* ============================================
+   Stat cards
+   ============================================ */
+main ul.stats-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+main .stat {
+    background: rgb(255, 255, 255);
+    border-radius: var(--radius-sm);
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: transform 0.25s ease;
+}
+
+main .stat:hover {
+    transform: translateY(-2px);
+}
+
+main .stat i {
+    font-size: 1.1rem;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 2px;
+}
+
+.stat--clouds i {
+    color: var(--amber);
+    background: var(--amber-dim);
+}
+
+.stat--humidity i {
+    color: var(--blue);
+    background: var(--blue-dim);
+}
+
+.stat--pressure i {
+    color: var(--coral);
+    background: var(--coral-dim);
+}
+
+.stat-label {
+    font-family: var(--ink);
+    font-weight: 500;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--slate);
+}
+
+/* ============================================
+   Error state
+   ============================================ */
+main.error {
+    animation: shake 0.55s ease-in-out;
+}
+
+main.error::after {
+    content: "City not found — try another search";
+    position: absolute;
+    left: 50%;
+    bottom: -46px;
+    transform: translateX(-50%);
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 9px 16px;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow: 0 10px 24px -8px rgba(255, 122, 92, 0.55);
+    animation: toast 1s ease forwards;
+}
+
+@keyframes shake {
+    0%   { transform: translateX(0); }
+    20%  { transform: translateX(-8px); }
+    40%  { transform: translateX(7px); }
+    60%  { transform: translateX(-5px); }
+    80%  { transform: translateX(3px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes toast {
+    0%   { opacity: 0; transform: translate(-50%, -6px); }
+    12%  { opacity: 1; transform: translate(-50%, 0); }
+    85%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 480px) {
+    .page {
+        padding: 24px 16px 40px;
+    }
+
+    .hero {
+        margin: 40px 0 32px;
+    }
+
+    main {
+        padding: 22px;
+    }
+
+    main .temperature img {
+        width: 120px;
+        height: 120px;
+    }
+
+    main .temperature figcaption {
+        font-size: 2.6rem;
+    }
+}
+
+/* ============================================
+   Accessibility — visible focus states
+   ============================================ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+}
+
+/* hello */
